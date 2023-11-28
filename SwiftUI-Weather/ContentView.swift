@@ -20,7 +20,7 @@ struct ContentView: View
 				CityNameView(cityName: "Moscow")
 				CurrentWeatherView(dataModel: currentDayModel)
 				
-				HStack
+				HStack(spacing: 10)
 				{
 					ForEach(forecastDayModels, id: \.self)
 					{ dayModel in
@@ -30,7 +30,11 @@ struct ContentView: View
 			
 				Spacer()
 			}
-		}.onAppear { WeatherNetwork.receiveWeatherInfo(townName: "Moscow", transferTo: { weatherResponse in processResponse(response: weatherResponse) })}
+		}.onAppear { 
+			WeatherNetwork.receiveWeatherInfo(
+				townName: "Moscow",
+				transferTo: { weatherResponse in processResponse(response: weatherResponse) }
+			)}
 	}
 	
 	func processResponse(response: WeatherResponse)
@@ -82,7 +86,6 @@ struct ContentView: View
 			return "NON"
 		}
 	}
-
 }
 
 #Preview 

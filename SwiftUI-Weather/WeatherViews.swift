@@ -33,7 +33,10 @@ struct BackgroundView: View
 	{
 		LinearGradient(gradient: Gradient(colors: [.blue, .lightBlue]),
 					   startPoint: .topLeading,
-					   endPoint: .bottomTrailing).edgesIgnoringSafeArea(.all)
+					   endPoint: .bottomTrailing).ignoresSafeArea()
+		/*ContainerRelativeShape()
+			.fill(Color.black.gradient)
+			.ignoresSafeArea()*/
 	}
 }
 
@@ -59,7 +62,7 @@ struct CurrentWeatherView: View
 		VStack
 		{
 			Image(systemName: dataModel.getImageNameFromStatus())
-				.renderingMode(.original)
+				.symbolRenderingMode(.multicolor)
 				.resizable()
 				.aspectRatio(contentMode: .fit)
 				.frame(width: 120, height: 120)
