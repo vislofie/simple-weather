@@ -1,67 +1,33 @@
 import SwiftUI
 
-struct DayView: View
-{
-	let dataModel: DayDataModel
-	
-	var body: some View
-	{
-		VStack
-		{
-			Text(dataModel.dayOfWeek)
-				.font(.system(size: 18, weight: .medium, design: .default))
-				.foregroundStyle(.white)
-				.padding(.top)
-			
-			Image(systemName: dataModel.getImageNameFromStatus())
-				.renderingMode(.original)
-				.resizable()
-				.aspectRatio(contentMode: .fit)
-				.frame(width: 45, height: 45)
-				.foregroundColor(.white)
-			Text(String(dataModel.temperature) + "°")
-				.font(.system(size: 24, weight: .medium, design: .default))
-				.foregroundStyle(.white)
-				.padding(.bottom)
-		}.padding(.horizontal, 5)
-	}
-}
-
-struct BackgroundView: View
-{
-	var body: some View
-	{
-		LinearGradient(gradient: Gradient(colors: [.blue, .lightBlue]),
-					   startPoint: .topLeading,
-					   endPoint: .bottomTrailing).ignoresSafeArea()
-		/*ContainerRelativeShape()
-			.fill(Color.black.gradient)
-			.ignoresSafeArea()*/
-	}
-}
-
 struct CityNameView: View
 {
 	let cityName: String
+	let dayOfWeek: String
+	let monthName: String
+	let day: Int
 	
 	var body: some View
 	{
-		Text("\(cityName)")
+		 Text("\(cityName)")
 			.font(.system(size: 32, weight: .medium, design: .default))
 			.foregroundStyle(.white)
-			.padding()
+		Text("\(dayOfWeek), \(day)\(Utilities.getDateDayPostfix(day: day)) of \(monthName)")
+			.font(.system(size: 24, weight: .light, design: .default))
+			.foregroundStyle(.white)
+			.padding(.bottom)
 	}
 }
 
 struct CurrentWeatherView: View
 {
-	let dataModel: DayDataModel
+	let dataModel: CurrentDayModel
 	
 	var body: some View
 	{
 		VStack
 		{
-			Image(systemName: dataModel.getImageNameFromStatus())
+			Image(systemName: dataModel.imagePath)
 				.symbolRenderingMode(.multicolor)
 				.resizable()
 				.aspectRatio(contentMode: .fit)
@@ -71,7 +37,7 @@ struct CurrentWeatherView: View
 				.font(.system(size: 70, weight: .medium, design: .default))
 				.foregroundStyle(.white)
 				.padding()
-		}.padding(.bottom, 10)
+		}
+		.padding(.bottom, 10)
 	}
 }
-
