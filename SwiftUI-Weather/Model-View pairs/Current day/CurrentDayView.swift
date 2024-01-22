@@ -34,7 +34,7 @@ struct CurrentDayView: View
 				
 				ZStack
 				{
-					BackgroundPanelView(width: 275, height: 63)
+					BackgroundPanelView(width: 275, height: 63, cornerRadius: 16)
 					
 					HStack(spacing: 35)
 					{
@@ -78,6 +78,7 @@ struct CurrentDayView: View
 		date: "28th of November",
 		precipitationLevel: Utilities.PrecipitationLevel.moderate,
 		temperature: -5,
+		isDay: true,
 		windDir: "NW",
 		windSpeed: 3,
 		pressure: 1050,

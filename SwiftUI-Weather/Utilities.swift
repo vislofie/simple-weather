@@ -28,21 +28,61 @@ struct Utilities
 		}
 	}
 	
-	private enum WeatherStatusImage : String
+	enum SpeedUnit
 	{
-		case cloudy 		= "cloud.fill"
-		case cloudyWithSun  = "cloud.sun.fill"
-		case sunny			= "sun.max.fill"
-		case lightRain      = "cloud.drizzle.fill"
-		case mediumRain     = "cloud.rain.fill"
-		case heavyRain      = "cloud.heavyrain.fill"
-		case hail			= "cloud.hail.fill"
-		case snow			= "cloud.snow.fill"
-		case sleet			= "cloud.sleet.fill"
-		case bolt 			= "cloud.bolt.rain.fill"
-		case sunAndRain		= "cloud.sun.rain.fill"
-		case wind			= "wind"
-		case snowyWind		= "wind.snow"
+		case metersPerSecond
+		case kilometersPerHour
+		case milesPerHour
+	}
+	
+	static func getWeatherStatusImagePath(isDay: Bool, windSpeed: Double, pressure: Double, precipitation: Double, willItRain: Bool, willItSnow: Bool) -> String
+	{
+		var resultString = ""
+		
+		resultString += "cloud."
+		
+		if (pressure > 1000)
+		{
+			if (isDay)
+			{
+				resultString += "sun."
+			}
+			else
+			{
+				resultString += "moon."
+			}
+		}
+		
+		if (willItRain)
+		{
+			switch PrecipitationLevel.getPrecipitationLevel(precipitationInMM: precipitation)
+			{
+			case .light:
+				resultString += "drizzle."
+			case .moderate:
+				resultString += "rain."
+			case .strong, .rainfall:
+				resultString += "heavyrain."
+			case .none:
+				resultString += "drizzle."
+			}
+		}
+		else if (willItSnow)
+		{
+			resultString += "snow."
+		}
+		else if (windSpeed > 8.5)
+		{
+			resultString = "wind"
+			if (willItSnow) { resultString += ".snow" }
+		}
+		
+		if (!resultString.contains("wind"))
+		{
+			resultString += "fill"
+		}
+		
+		return resultString
 	}
 	
 	static func getDateDayPostfix(day: Int) -> String
@@ -170,9 +210,34 @@ struct Utilities
 		var mutableHour = hour
 		while (mutableHour > 23)
 		{
-			mutableHour -= 24
+			mutableHour = mutableHour - 24
 		}
 		
-		return "cloud.sun.fill"
+		let currentHour = forecastModel.hours[mutableHour]
+		
+		return getWeatherStatusImagePath(
+			isDay: currentHour.isDay,
+			windSpeed: currentHour.windSpeed,
+			pressure: currentHour.pressure,
+			precipitation: currentHour.precipitation,
+			willItRain: currentHour.isItRaining,
+			willItSnow: currentHour.isItSnowing)
+	}
+	static func convertToMetersPerSecond(value: Double, from unit: SpeedUnit) -> Double
+	{
+		switch unit
+		{
+		case .metersPerSecond:
+			return value
+		case .kilometersPerHour:
+			return value / 3.6
+		case .milesPerHour:
+			return value / 2.237
+		}
+	}
+	
+	static func getCurrentHour() -> Int
+	{
+		return Calendar.current.component(.hour, from: Date())
 	}
 }

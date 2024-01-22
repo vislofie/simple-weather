@@ -63,7 +63,16 @@ struct WeatherResponse : Decodable
 	{
 		let date: String
 		let day: Day
+		let astro: Astro
 		let hour: [Hour]
+	}
+	
+	struct Astro : Decodable
+	{
+		let sunrise: String
+		let sunset: String
+		let moonrise: String
+		let moonset: String
 	}
 	
 	struct Day : Decodable
@@ -80,9 +89,10 @@ struct WeatherResponse : Decodable
 		let daily_will_it_rain: Int
 	}
 	
-	struct Hour: Decodable
+	struct Hour : Decodable
 	{
 		let time: String
+		let is_day: Int
 		let temp_c: Double
 		let wind_kph: Double
 		let wind_dir: String

@@ -14,14 +14,14 @@ struct ForecastHourElementView: View
 				.foregroundStyle(.white)
 				.font(.system(size: 12, weight: .bold))
 				.frame(width: 49, height: 21)
-			Image(systemName: "cloud.fill")
+			Image(systemName: imagePath)
 				.symbolRenderingMode(.multicolor)
 				.resizable()
 				.aspectRatio(contentMode: .fill)
 				.frame(width: 46, height: 31)
 			Text("\(temperature)º")
 				.foregroundStyle(.white)
-				.font(.system(size: 24, weight: .bold ))
+				.font(.system(size: 20, weight: .bold ))
 				.frame(width: 49, height: 31)
 		}
     }

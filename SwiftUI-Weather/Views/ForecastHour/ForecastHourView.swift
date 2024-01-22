@@ -11,9 +11,10 @@ struct ForecastHourView: View
 	
     var body: some View
 	{
-		ZStack
-		{
-			BackgroundPanelView(width: 367, height: 111)
+		GeometryReader
+		{ geometry in
+			
+			BackgroundPanelView(width: geometry.size.width, height: 111, cornerRadius: 24)
 			
 			ScrollView(.horizontal, showsIndicators: false)
 			{
@@ -21,19 +22,19 @@ struct ForecastHourView: View
 				{
 					Text("")
 					
-					ForEach(0..<25)
+					ForEach(0..<24)
 					{ i in
 						ForecastHourElementView(
 							time: "\(Utilities.getFormattedTime(time: startWithHour + i)):00",
 							imagePath: Utilities.getImagePathByHour(
 								forecastModel: startWithHour + i > 23 ? nextForecastDay : currentForecastDay,
 								hour: startWithHour + i),
-							temperature: "-5")
+							temperature: String(Int(((startWithHour + i) > 23 ? nextForecastDay.hours[startWithHour + i - 24].temperature : currentForecastDay.hours[startWithHour + i].temperature))))
 					}
 					
 					Text("")
 				}
-			}.padding(.leading, 15).padding(.trailing, 15)
+			}.padding(.vertical, 5)
 		}
     }
 }
@@ -43,5 +44,5 @@ struct ForecastHourView: View
 	ForecastHourView(
 		currentForecastDay: .constant(ForecastDayModel()),
 		nextForecastDay: .constant(ForecastDayModel()),
-		startWithHour: 12)
+		startWithHour: 0)
 }

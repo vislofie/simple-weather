@@ -8,6 +8,8 @@ struct CurrentDayModel : Hashable
 	
 	let temperature: Int
 	
+	let isDay: Bool
+	
 	let windDir: String
 	let windSpeed: Int
 	let pressure: Int
@@ -16,7 +18,7 @@ struct CurrentDayModel : Hashable
 	
 	public private(set) var imagePath : String
 	
-	init(place: String, dayOfWeek: String, date: String, precipitationLevel: Utilities.PrecipitationLevel, temperature: Int, windDir: String, windSpeed: Int, pressure: Int, precipitation: Int, humidity: Int)
+	init(place: String, dayOfWeek: String, date: String, precipitationLevel: Utilities.PrecipitationLevel, temperature: Int, isDay: Bool, windDir: String, windSpeed: Int, pressure: Int, precipitation: Int, humidity: Int)
 	{
 		self.place = place
 		self.dayOfWeek = dayOfWeek
@@ -25,6 +27,7 @@ struct CurrentDayModel : Hashable
 		self.precipitationLevel = precipitationLevel
 		
 		self.temperature = temperature
+		self.isDay = isDay
 		
 		self.windDir = windDir
 		self.windSpeed = windSpeed
@@ -32,7 +35,7 @@ struct CurrentDayModel : Hashable
 		self.precipitation = precipitation
 		self.humidity = humidity
 		
-		imagePath = "cloud.sun.fill"
+		imagePath = Utilities.getWeatherStatusImagePath(isDay: isDay, windSpeed: Utilities.convertToMetersPerSecond(value: Double(windSpeed), from: .kilometersPerHour), pressure: Double(pressure), precipitation: Double(precipitation), willItRain: precipitationLevel != .none, willItSnow: precipitationLevel != .none)
 	}
 	
 	init()
@@ -44,6 +47,8 @@ struct CurrentDayModel : Hashable
 		self.precipitationLevel = Utilities.PrecipitationLevel.none
 		
 		self.temperature = 0
+		
+		self.isDay = true
 		
 		self.windDir = "NW"
 		self.windSpeed = 0
